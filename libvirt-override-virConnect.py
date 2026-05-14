@@ -288,6 +288,15 @@
         cb(self, virDomain(self, _obj=dom), alias, oldMAC, newMAC, opaque)
         return 0
 
+    def _dispatchDomainEventVcpuRemovedCallback(self, dom: 'virDomain', vcpuid: int, cbData: Dict[str, Any]) -> int:
+        """Dispatches event to python user domain vCPU removal  event callbacks
+        """
+        cb = cbData["cb"]
+        opaque = cbData["opaque"]
+
+        cb(self, virDomain(self, _obj=dom), vcpuid, opaque)
+        return 0
+
     def domainEventDeregisterAny(self, callbackID: int) -> None:
         """Removes a Domain Event Callback. De-registering for a
            domain callback will disable delivery of this event type """

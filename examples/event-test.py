@@ -652,6 +652,10 @@ def myDomainEventNICMACChangeCallback(conn: libvirt.virConnect, dom: libvirt.vir
     print("myDomainEventNICMACChangeCallback: Domain %s(%s) NIC MAC change alias %s old MAC: %s new MAC: %s" % (
         dom.name(), dom.ID(), alias, oldMAC, newMAC))
 
+def myDomainEventVcpuRemovedCallback(conn: libvirt.virConnect, dom: libvirt.virDomain, vcpuid: int, opaque: _T) -> None:
+    print("myDomainEventVcpuRemovedCallback: Domain %s(%s) vCPU removed %d" % (
+        dom.name(), dom.ID(), vcpuid))
+
 
 ##########################################################################
 # Network events
@@ -811,6 +815,7 @@ def main() -> None:
         vc.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_MEMORY_FAILURE, myDomainEventMemoryFailureCallback, None),
         vc.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_MEMORY_DEVICE_SIZE_CHANGE, myDomainEventMemoryDeviceSizeChangeCallback, None),
         vc.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_NIC_MAC_CHANGE, myDomainEventNICMACChangeCallback, None),
+        vc.domainEventRegisterAny(None, libvirt.VIR_DOMAIN_EVENT_ID_VCPU_REMOVED, myDomainEventVcpuRemovedCallback, None),
     ]
 
     netcallbacks = [
