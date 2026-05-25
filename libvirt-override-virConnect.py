@@ -326,6 +326,16 @@
         cb(self, virNetwork(self, _obj=dom), mtype, nsuri, opaque)
         return 0
 
+    def _dispatchDomainEventChannelLifecycleCallback(self, dom: 'virDomain', state: int, reason: int, cbData: Dict[str, Any]) -> int:
+        """Dispatches event to python user domain channel lifecycle event callback
+        """
+
+        cb = cbData["cb"]
+        opaque = cbData["opaque"]
+
+        cb(self, virDomain(self, _obj=dom), state, reason, opaque)
+        return 0
+
     def networkEventDeregisterAny(self, callbackID: int) -> None:
         """Removes a Network Event Callback. De-registering for a
            network callback will disable delivery of this event type"""
