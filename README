@@ -20,6 +20,14 @@ Requirements
 To build the libvirt python binary requires the GCC and pkg-config
 tools, and development headers for the libvirt and python libraries.
 
+Additionally, the Python build module is required and can be installed via:
+
+  $ dnf install python3-build
+
+or
+
+  $ python3 -m pip install --user build
+
 Building and installing
 -----------------------
 
@@ -38,8 +46,11 @@ without explicit building.
 In order to test the package, you'll need either tox or at least pytest,
 depending on whether you want to test an already installed package in which
 case the latter is sufficient or if you wish to test in a virtual
-environment you'd need tox. Depending on your preferred setup, you can run the
-tests either as
+environment you'd need tox. First, install the test dependencies:
+
+  $ python3 -m pip install -r requirements-test.txt
+
+Depending on your preferred setup, you can run the tests either as
 
   $ python3 -m pytest
 
