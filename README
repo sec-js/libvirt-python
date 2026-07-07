@@ -58,6 +58,10 @@ or as
 
   $ tox
 
+Free-threaded Python (py313t, py314t) test environments require tox>=4.26
+and the corresponding free-threaded interpreters (python3.13t, python3.14t)
+to be installed.
+
 A makefile shim is also provided for your convenience, so that you don't have
 to care about the exact operations mentioned above and instead you simply do
 
