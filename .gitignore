@@ -13,3 +13,4 @@ eggs/
 sdist/
 *.egg-info/
 *.egg
+docs/_build/
