@@ -16,7 +16,7 @@
     def __exit__(self, exc_type_: Optional[Type[BaseException]], exc_value_: Optional[BaseException], traceback_: Optional[TracebackType]) -> None:
         self.close()
 
-    def domainEventDeregister(self, cb: _DomainCB[_T]) -> None:
+    def domainEventDeregister(self, cb: _DomainCB) -> None:
         """Removes a Domain Event Callback. De-registering for a
            domain callback will disable delivery of this event type """
         try:
@@ -29,13 +29,13 @@
         except AttributeError:
             pass
 
-    def domainEventRegister(self, cb: _DomainCB[_T], opaque: _T) -> None:
+    def domainEventRegister(self, cb: _DomainCB, opaque: _T) -> None:
         """Adds a Domain Event Callback. Registering for a domain
            callback will enable delivery of the events """
         try:
             self.domainEventCallbacks[cb] = opaque
         except AttributeError:
-            self.domainEventCallbacks = {cb: opaque}  # type: Dict[_DomainCB[_T], _T]
+            self.domainEventCallbacks = {cb: opaque}  # type: Dict[_DomainCB, _T]
             ret = libvirtmod.virConnectDomainEventRegister(self._o, self)
             if ret == -1:
                 raise libvirtError('virConnectDomainEventRegister() failed')
