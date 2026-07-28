@@ -1,9 +1,6 @@
     def __del__(self) -> None:
-        try:
-            if self.cb:
-                libvirtmod.virStreamEventRemoveCallback(self._o)
-        except AttributeError:
-            pass
+        if hasattr(self, "cb"):
+            libvirtmod.virStreamEventRemoveCallback(self._o)
 
         if self._o is not None:
             libvirtmod.virStreamFree(self._o)
