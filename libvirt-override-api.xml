@@ -448,7 +448,7 @@
     <function name='virNodeListDevices' file='python'>
       <info>list the node devices</info>
       <arg name='conn' type='virConnectPtr' info='pointer to the hypervisor connection'/>
-      <arg name='cap' type='const unsigned char *' info='capability name'/>
+      <arg name='cap' type='const char *' info='capability name'/>
       <arg name='flags' type='unsigned int' info='flags (unused; pass 0)'/>
       <return type='char *' info='the list of Names or None in case of error'/>
     </function>
