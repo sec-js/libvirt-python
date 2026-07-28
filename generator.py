@@ -9,16 +9,16 @@ import sys
 import xml.sax
 from contextlib import closing
 from collections import defaultdict
-from typing import Dict, IO, List, Optional, Set, Tuple, Union  # noqa F401
-ArgumentType = Tuple[str, str, str]
-FunctionType = Tuple[str, ArgumentType, List[ArgumentType], str, str, str]
+from typing import IO, Optional, Union  # noqa F401
+ArgumentType = tuple[str, str, str]
+FunctionType = tuple[str, ArgumentType, list[ArgumentType], str, str, str]
 EnumValue = Union[str, int]
-EnumType = Dict[str, EnumValue]
+EnumType = dict[str, EnumValue]
 
-functions = {}  # type: Dict[str, FunctionType]
-enums = defaultdict(dict)  # type: Dict[str, EnumType] # { enumType: { enumConstant: enumValue } }
-event_ids = []  # type: List[str]
-params = []  # type: List[Tuple[str, str]] # [ (paramName, paramValue)... ]
+functions = {}  # type: dict[str, FunctionType]
+enums = defaultdict(dict)  # type: dict[str, EnumType] # { enumType: { enumConstant: enumValue } }
+event_ids = []  # type: list[str]
+params = []  # type: list[tuple[str, str]] # [ (paramName, paramValue)... ]
 
 
 quiet = True
@@ -66,7 +66,7 @@ def parse(data: IO[str]) -> None:
 
 class docParser(xml.sax.handler.ContentHandler):
     def __init__(self) -> None:
-        self._data = []  # type: List[str]
+        self._data = []  # type: list[str]
         self.in_function = False
 
     def characters(self, text: str) -> None:
@@ -74,14 +74,14 @@ class docParser(xml.sax.handler.ContentHandler):
             print("data %s" % text)
         self._data.append(text)
 
-    def startElement(self, tag: str, attrs: Dict[str, str]) -> None:
+    def startElement(self, tag: str, attrs: dict[str, str]) -> None:
         if debug:
             print("start %s, %s" % (tag, attrs))
         if tag == 'function':
             self._data = []
             self.in_function = True
             self.function_cond = ''
-            self.function_args = []  # type: List[ArgumentType]
+            self.function_args = []  # type: list[ArgumentType]
             self.function_descr = ''
             self.function_return = None  # type: Optional[ArgumentType]
             self.function = attrs.get('name', '')
@@ -158,7 +158,7 @@ class docParser(xml.sax.handler.ContentHandler):
                 self.function_cond = str
 
 
-def function(name: str, desc: str, ret: ArgumentType, args: List[ArgumentType], file: str, module: str, cond: str) -> None:
+def function(name: str, desc: str, ret: ArgumentType, args: list[ArgumentType], file: str, module: str, cond: str) -> None:
     if onlyOverrides and name not in functions:
         return
     if name == "virConnectListDomains":
@@ -298,7 +298,7 @@ py_types = {
     'virDomainSnapshotPtr': ('O', "virDomainSnapshot", "virDomainSnapshotPtr", "virDomainSnapshotPtr", "virDomainSnapshot"),
     'virDomainSnapshot *': ('O', "virDomainSnapshot", "virDomainSnapshotPtr", "virDomainSnapshotPtr", "virDomainSnapshot"),
     'const virDomainSnapshot *': ('O', "virDomainSnapshot", "virDomainSnapshotPtr", "virDomainSnapshotPtr", "virDomainSnapshot"),
-}  # type: Dict[str, Tuple[str, str, str, str, str]]
+}  # type: dict[str, tuple[str, str, str, str, str]]
 
 
 # These C types are used only in generated Python code, so don't need the
@@ -306,8 +306,8 @@ py_types = {
 py_types_only = {
     'bool': "bool",
     'const unsigned char *': "bytes",
-    'const char **': "List[str]",
-    'unsigned int *': "List[int]",
+    'const char **': "list[str]",
+    'unsigned int *': "list[int]",
     'virErrorPtr': "_RawError",
     'virEventAddHandleFunc': "_EventAddHandleFunc[_T]",
     'virEventUpdateHandleFunc': "_EventUpdateHandleFunc",
@@ -319,7 +319,7 @@ py_types_only = {
     'virMemoryParameterPtr': "_MemoryParameter",
     'virSchedParameterPtr': "_SchedParameter",
     'virTypedParameterPtr': "_TypedParameter",
-}  # type: Dict[str, str]
+}  # type: dict[str, str]
 
 
 #######################################################################
@@ -647,8 +647,8 @@ def validate_function(name):
 
 
 def validate_functions():
-    unknown_types = defaultdict(list)  # type: Dict[str, List[str]]
-    funcs_failed = []  # type: List[str]
+    unknown_types = defaultdict(list)  # type: dict[str, list[str]]
+    funcs_failed = []  # type: list[str]
 
     for name in sorted(functions):
         unknown = validate_function(name)
@@ -1037,7 +1037,7 @@ functions_noexcept = {
 
 function_classes = {
     "None": []
-}  # type: Dict[str, List[Tuple[int, str, str, ArgumentType, List[ArgumentType], str, str]]]
+}  # type: dict[str, list[tuple[int, str, str, ArgumentType, list[ArgumentType], str, str]]]
 
 # Functions returning an integral type which need special rules to
 # check for errors and raise exceptions.
@@ -1265,12 +1265,12 @@ def nameFixup(name: str, classe: str, type: str, file: str) -> str:
     return func
 
 
-def functionSortKey(info: Tuple) -> Tuple[str, str]:
+def functionSortKey(info: tuple) -> tuple[str, str]:
     (index, func, name, ret, args, filename, mod) = info
     return func, filename
 
 
-def writeDoc(module: str, name: str, args: List[ArgumentType], indent: str, output: IO) -> None:
+def writeDoc(module: str, name: str, args: list[ArgumentType], indent: str, output: IO) -> None:
     if not functions[name][0]:
         return
     val = functions[name][0]
@@ -1300,10 +1300,10 @@ def emit_py_code(module: str) -> None:
     # Build the list of C types to look for ordered to start
     # with primary classes
     #
-    ctypes = []  # type: List[str]
-    classes_list = []  # type: List[str]
-    ctypes_processed = set()  # type: Set[str]
-    classes_processed = set()  # type: Set[str]
+    ctypes = []  # type: list[str]
+    classes_list = []  # type: list[str]
+    ctypes_processed = set()  # type: set[str]
+    classes_processed = set()  # type: set[str]
     for classe in primary_classes:
         classes_list.append(classe)
         classes_processed.add(classe)
@@ -1694,7 +1694,7 @@ def emit_py_code(module: str) -> None:
                 # that don't exist. This code attempts to detect which
                 # methods to skip by looking at the libvirtmod.XXXX calls
 
-                def shouldSkip(lines: List[str]) -> bool:
+                def shouldSkip(lines: list[str]) -> bool:
                     for line in lines:
                         offset = line.find(pymod + ".")
                         if offset != -1:
@@ -1792,7 +1792,7 @@ def emit_py_code(module: str) -> None:
     #
     # Generate enum constants
     #
-    def enumsSortKey(data: Tuple[str, EnumValue]) -> Tuple[Union[int, float], str]:
+    def enumsSortKey(data: tuple[str, EnumValue]) -> tuple[Union[int, float], str]:
         try:
             value = int(data[1])  # type: Union[int, float]
         except ValueError:

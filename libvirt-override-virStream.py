@@ -6,7 +6,7 @@
             libvirtmod.virStreamFree(self._o)
         self._o = None
 
-    def _dispatchStreamEventCallback(self, events: int, cbData: Dict[str, Any]) -> int:
+    def _dispatchStreamEventCallback(self, events: int, cbData: dict[str, Any]) -> int:
         """
         Dispatches events to python user's stream event callbacks
         """
@@ -218,7 +218,7 @@
                 self.abort()
                 raise RuntimeError("sparseRecvAll handler returned %d" % ret_data)
 
-    def sparseSendAll(self, handler: Callable[['virStream', int, _T], Union[bytes, int]], holeHandler: Callable[['virStream', _T], Tuple[bool, int]], skipHandler: Callable[['virStream', int, _T], int], opaque: _T) -> None:
+    def sparseSendAll(self, handler: Callable[['virStream', int, _T], Union[bytes, int]], holeHandler: Callable[['virStream', _T], tuple[bool, int]], skipHandler: Callable[['virStream', int, _T], int], opaque: _T) -> None:
         """Send the entire data stream, reading the data from the
         requested data source. This is simply a convenient
         alternative to virStreamSend, for apps that do

@@ -54,7 +54,7 @@ import warnings
 
 import libvirt
 
-from typing import Any, Callable, Dict, Generator, Optional, TypeVar  # noqa F401
+from typing import Any, Callable, Generator, Optional, TypeVar  # noqa F401
 _T = TypeVar('_T')
 
 __author__ = 'Wojtek Porczyk <woju@invisiblethingslab.com>'
@@ -106,7 +106,7 @@ class Descriptor(object):
     def __init__(self, impl: "virEventAsyncIOImpl", fd: int) -> None:
         self.impl = impl
         self.fd = fd
-        self.callbacks = {}  # type: Dict
+        self.callbacks = {}  # type: dict
 
     def _handle(self, event: int) -> None:
         '''Dispatch the event to the descriptors
@@ -286,7 +286,7 @@ class virEventAsyncIOImpl(object):
 
     def __init__(self, loop: Optional[asyncio.AbstractEventLoop] = None) -> None:
         self.loop = loop or asyncio.get_event_loop()
-        self.callbacks = {}  # type: Dict[int, Callback]
+        self.callbacks = {}  # type: dict[int, Callback]
         self.descriptors = DescriptorDict(self)
         self.log = logging.getLogger(self.__class__.__name__)
 
