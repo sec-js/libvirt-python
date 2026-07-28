@@ -4,11 +4,10 @@
 #
 # https://gitlab.com/libvirt/libvirt-ci
 
-FROM registry.opensuse.org/opensuse/leap:15.6
+FROM registry.opensuse.org/opensuse/leap:16.0
 
 RUN zypper update -y && \
-    zypper addrepo -fc https://download.opensuse.org/update/leap/15.6/backports/openSUSE:Backports:SLE-15-SP6:Update.repo && \
-    zypper install -y \
+    zypper install -y --allow-downgrade \
            ca-certificates \
            ccache \
            gcc \
@@ -17,6 +16,7 @@ RUN zypper update -y && \
            libvirt-devel \
            pkgconfig \
            python3-base \
+           python3-build \
            python3-devel \
            python3-lxml \
            python3-pip \
@@ -30,8 +30,6 @@ RUN zypper update -y && \
     mkdir -p /usr/libexec/ccache-wrappers && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/cc && \
     ln -s /usr/bin/ccache /usr/libexec/ccache-wrappers/gcc
-
-RUN /usr/bin/pip3 install build
 
 ENV CCACHE_WRAPPERSDIR="/usr/libexec/ccache-wrappers"
 ENV LANG="en_US.UTF-8"

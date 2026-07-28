@@ -68,7 +68,7 @@ targets:
       - arch: x86_64
         allow-failure: true
 
-  opensuse-leap-15:
+  opensuse-leap-16:
     jobs:
       - arch: x86_64
         variables:
