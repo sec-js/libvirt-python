@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, List, IO, Optional
+from typing import Any, Callable, Dict, List, IO, Optional, Tuple
 
 
 def _dispatchQemuMonitorEventCallback(conn: libvirt.virConnect, dom: libvirt.virDomain, event: str, seconds: int, micros: int, details: str, cbData: Dict[str, Any]) -> int:
@@ -38,7 +38,7 @@ def qemuMonitorEventRegister(conn: libvirt.virConnect, dom: libvirt.virDomain, e
     conn.qemuMonitorEventCallbackID[ret] = opaque  # type: ignore
     return ret
 
-def qemuMonitorCommandWithFiles(domain: libvirt.virDomain, cmd: str, files: List[int] = [], flags: Optional[int] = 0) -> (str, List[IO]):
+def qemuMonitorCommandWithFiles(domain: libvirt.virDomain, cmd: str, files: List[int] = [], flags: Optional[int] = 0) -> Tuple[str, List[IO]]:
     """This API is QEMU specific, so it will only work with hypervisor
     connections to the QEMU driver with local connections using the unix
     socket.
