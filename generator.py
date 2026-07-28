@@ -1404,7 +1404,10 @@ def emit_py_code(module: str) -> None:
                     classes.write(", ")
                 classes.write("%s" % a_name)
                 if a_type in types_map:
-                    classes.write(": \"%s\"" % types_map[a_type])
+                    typ = types_map[a_type]
+                    if a_name == "flags" or is_optional_arg(a_info):
+                        typ = "Optional[%s]" % typ
+                    classes.write(": \"%s\"" % typ)
                 if a_name == "flags" or is_optional_arg(a_info):
                     if is_integral_type(a_type):
                         classes.write("=0")
@@ -1507,18 +1510,18 @@ def emit_py_code(module: str) -> None:
             if classname in ["virDomain", "virNetwork", "virInterface", "virStoragePool",
                              "virStorageVol", "virNodeDevice", "virSecret", "virStream",
                              "virNWFilter", "virNWFilterBinding"]:
-                classes.write("    def __init__(self, conn: \"virConnect\", _obj: object=None):\n")
+                classes.write("    def __init__(self, conn: \"virConnect\", _obj: Optional[object]=None):\n")
                 classes.write("        self._conn = conn\n")
             elif classname in ["virDomainCheckpoint", "virDomainSnapshot"]:
-                classes.write("    def __init__(self, dom: \"virDomain\", _obj: object=None):\n")
+                classes.write("    def __init__(self, dom: \"virDomain\", _obj: Optional[object]=None):\n")
                 classes.write("        self._dom = dom\n")
                 classes.write("        self._conn = dom.connect()\n")
             elif classname in ["virNetworkPort"]:
-                classes.write("    def __init__(self, net: \"virNetwork\", _obj: object=None) -> None:\n")
+                classes.write("    def __init__(self, net: \"virNetwork\", _obj: Optional[object]=None) -> None:\n")
                 classes.write("        self._net = net\n")
                 classes.write("        self._conn = net.connect()\n")
             else:
-                classes.write("    def __init__(self, _obj: object=None):\n")
+                classes.write("    def __init__(self, _obj: Optional[object]=None):\n")
 
             classes.write("        if type(_obj).__name__ not in [\"PyCapsule\", \"PyCObject\"]:\n")
             classes.write("            raise Exception(\"Expected a wrapped C Object but got %s\" % type(_obj))\n")
@@ -1573,7 +1576,10 @@ def emit_py_code(module: str) -> None:
                     if n != index:
                         classes.write(", %s" % a_name)
                         if a_type in types_map:
-                            classes.write(": \"%s\"" % types_map[a_type])
+                            typ = types_map[a_type]
+                            if a_name == "flags" or is_optional_arg(a_info):
+                                typ = "Optional[%s]" % typ
+                            classes.write(": \"%s\"" % typ)
                     if a_name == "flags" or is_optional_arg(a_info):
                         if is_integral_type(a_type):
                             classes.write("=0")

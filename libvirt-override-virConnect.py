@@ -513,7 +513,7 @@
         self.secretEventCallbackID[ret] = opaque
         return ret
 
-    def listAllDomains(self, flags: int = 0) -> List['virDomain']:
+    def listAllDomains(self, flags: Optional[int] = 0) -> List['virDomain']:
         """List all domains and returns a list of domain objects"""
         ret = libvirtmod.virConnectListAllDomains(self._o, flags)
         if ret is None:
@@ -521,7 +521,7 @@
 
         return [virDomain(self, _obj=domptr) for domptr in ret]
 
-    def listAllStoragePools(self, flags: int = 0) -> List['virStoragePool']:
+    def listAllStoragePools(self, flags: Optional[int] = 0) -> List['virStoragePool']:
         """Returns a list of storage pool objects"""
         ret = libvirtmod.virConnectListAllStoragePools(self._o, flags)
         if ret is None:
@@ -529,7 +529,7 @@
 
         return [virStoragePool(self, _obj=poolptr) for poolptr in ret]
 
-    def listAllNetworks(self, flags: int = 0) -> List['virNetwork']:
+    def listAllNetworks(self, flags: Optional[int] = 0) -> List['virNetwork']:
         """Returns a list of network objects"""
         ret = libvirtmod.virConnectListAllNetworks(self._o, flags)
         if ret is None:
@@ -537,7 +537,7 @@
 
         return [virNetwork(self, _obj=netptr) for netptr in ret]
 
-    def listAllInterfaces(self, flags: int = 0) -> List['virInterface']:
+    def listAllInterfaces(self, flags: Optional[int] = 0) -> List['virInterface']:
         """Returns a list of interface objects"""
         ret = libvirtmod.virConnectListAllInterfaces(self._o, flags)
         if ret is None:
@@ -545,7 +545,7 @@
 
         return [virInterface(self, _obj=ifaceptr) for ifaceptr in ret]
 
-    def listAllDevices(self, flags: int = 0) -> List['virNodeDevice']:
+    def listAllDevices(self, flags: Optional[int] = 0) -> List['virNodeDevice']:
         """Returns a list of host node device objects"""
         ret = libvirtmod.virConnectListAllNodeDevices(self._o, flags)
         if ret is None:
@@ -553,7 +553,7 @@
 
         return [virNodeDevice(self, _obj=devptr) for devptr in ret]
 
-    def listAllNWFilters(self, flags: int = 0) -> List['virNWFilter']:
+    def listAllNWFilters(self, flags: Optional[int] = 0) -> List['virNWFilter']:
         """Returns a list of network filter objects"""
         ret = libvirtmod.virConnectListAllNWFilters(self._o, flags)
         if ret is None:
@@ -561,7 +561,7 @@
 
         return [virNWFilter(self, _obj=filter_ptr) for filter_ptr in ret]
 
-    def listAllNWFilterBindings(self, flags: int = 0) -> List['virNWFilterBinding']:
+    def listAllNWFilterBindings(self, flags: Optional[int] = 0) -> List['virNWFilterBinding']:
         """Returns a list of network filter binding objects"""
         ret = libvirtmod.virConnectListAllNWFilterBindings(self._o, flags)
         if ret is None:
@@ -569,7 +569,7 @@
 
         return [virNWFilterBinding(self, _obj=filter_ptr) for filter_ptr in ret]
 
-    def listAllSecrets(self, flags: int = 0) -> List['virSecret']:
+    def listAllSecrets(self, flags: Optional[int] = 0) -> List['virSecret']:
         """Returns a list of secret objects"""
         ret = libvirtmod.virConnectListAllSecrets(self._o, flags)
         if ret is None:
@@ -600,7 +600,7 @@
             raise libvirtError('virConnectRegisterCloseCallback() failed')
         return ret
 
-    def createXMLWithFiles(self, xmlDesc: str, files: List[int], flags: int = 0) -> 'virDomain':
+    def createXMLWithFiles(self, xmlDesc: str, files: List[int], flags: Optional[int] = 0) -> 'virDomain':
         """Launch a new guest domain, based on an XML description similar
         to the one returned by virDomainGetXMLDesc()
         This function may require privileged access to the hypervisor.
@@ -631,7 +631,7 @@
         __tmp = virDomain(self, _obj=ret)
         return __tmp
 
-    def getAllDomainStats(self, stats: int = 0, flags: int = 0) -> List[Tuple['virDomain', Dict[str, Any]]]:
+    def getAllDomainStats(self, stats: Optional[int] = 0, flags: Optional[int] = 0) -> List[Tuple['virDomain', Dict[str, Any]]]:
         """Query statistics for all domains on a given connection.
 
         Report statistics of various parameters for a running VM according to @stats
@@ -679,7 +679,7 @@
 
         return [(virDomain(self, _obj=elem[0]), elem[1]) for elem in ret]
 
-    def domainListGetStats(self, doms: List['virDomain'], stats: int = 0, flags: int = 0) -> List[Tuple['virDomain', Dict[str, Any]]]:
+    def domainListGetStats(self, doms: List['virDomain'], stats: Optional[int] = 0, flags: Optional[int] = 0) -> List[Tuple['virDomain', Dict[str, Any]]]:
         """ Query statistics for given domains.
 
         Report statistics of various parameters for a running VM according to @stats

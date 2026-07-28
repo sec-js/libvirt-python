@@ -127,7 +127,7 @@
             raise libvirtError('virStreamSend() failed')
         return ret
 
-    def recvHole(self, flags: int = 0) -> int:
+    def recvHole(self, flags: Optional[int] = 0) -> int:
         """This method is used to determine the length in bytes
         of the empty space to be created in a stream's target
         file when uploading or downloading sparsely populated
@@ -138,7 +138,7 @@
             raise libvirtError('virStreamRecvHole() failed')
         return ret
 
-    def sendHole(self, length: int, flags: int = 0) -> int:
+    def sendHole(self, length: int, flags: Optional[int] = 0) -> int:
         """Rather than transmitting empty file space, this method
         directs the stream target to create length bytes of empty
         space.  This method would be used when uploading or
@@ -150,7 +150,7 @@
             raise libvirtError('virStreamSendHole() failed')
         return ret
 
-    def recvFlags(self, nbytes: int, flags: int = 0) -> Union[bytes, int]:
+    def recvFlags(self, nbytes: int, flags: Optional[int] = 0) -> Union[bytes, int]:
         """Reads a series of bytes from the stream. This method may
         block the calling application for an arbitrary amount
         of time. This is just like recv except it has flags

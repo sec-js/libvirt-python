@@ -91,7 +91,7 @@ def registerErrorHandler(f: Callable[[_T, _RawError], None], ctx: _T) -> int:
     return libvirtmod.virRegisterErrorHandler(f, ctx)
 
 
-def openAuth(uri: str, auth: List, flags: int = 0) -> 'virConnect':
+def openAuth(uri: str, auth: List, flags: Optional[int] = 0) -> 'virConnect':
     # TODO: The C code requires a List and there is not *Mutable*Tuple for a better description such as
     # auth: Tuple[List[int], Callable[[List[MutableTuple[int, str, str, str, Any]], _T], int], _T]
     """
@@ -156,7 +156,7 @@ def getVersion(name: Optional[str] = None) -> int:
 @overload
 def _eventInvokeHandleCallback(watch: int, fd: int, event: int, opaque: Tuple[_EventCB[_T], _T], opaquecompat: None = None) -> None: ...  # noqa E704
 @overload  # noqa F811
-def _eventInvokeHandleCallback(watch: int, fd: int, event: int, opaque: _EventCB[_T], opaquecompat: _T = None) -> None: ...  # noqa E704
+def _eventInvokeHandleCallback(watch: int, fd: int, event: int, opaque: _EventCB[_T], opaquecompat: Optional[_T] = None) -> None: ...  # noqa E704
 def _eventInvokeHandleCallback(watch: int, fd: int, event: int, opaque: Union[Tuple[_EventCB[_T], _T], _EventCB[_T]], opaquecompat: Optional[_T] = None) -> None:  # noqa F811
     """
     Invoke the Event Impl Handle Callback in C
