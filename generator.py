@@ -1391,6 +1391,11 @@ def emit_py_code(module: str) -> None:
     types_map = {name: types[-1] for name, types in py_types.items()}
     types_map.update(py_types_only)
 
+    if module != "libvirt":
+        for name, types in types_map.items():
+            if types.startswith("vir"):
+                types_map[name] = "libvirt." + types
+
     if "None" in function_classes:
         flist = function_classes["None"]
         oldfile = ""
