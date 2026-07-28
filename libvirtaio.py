@@ -230,7 +230,7 @@ class TimeoutCallback(Callback):
         return '<{} iden={} timeout={}>'.format(
             self.__class__.__name__, self.iden, self.timeout)
 
-    async def _timer(self) -> Generator[Any, None, None]:
+    async def _timer(self):
         '''An actual timer running on the event loop.
 
         This is a coroutine.
