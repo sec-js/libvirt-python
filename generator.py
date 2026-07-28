@@ -238,7 +238,7 @@ py_types = {
     'unsigned long': ('l', '', "long", "long", "int"),
     'long long': ('L', '', "longlong", "long long", "int"),
     'unsigned long long': ('L', '', "longlong", "long long", "int"),
-    'unsigned char *': ('z', '', "charPtr", "char *", "str"),
+    'unsigned char *': ('z', '', "charPtr", "char *", "bytes"),
     'char *': ('z', '', "charPtr", "char *", "str"),
     'const char *': ('z', '', "constcharPtr", "const char *", "str"),
     'size_t': ('n', '', "size_t", "size_t", "int"),
@@ -305,7 +305,7 @@ py_types = {
 # C-supporting elements from py_types.
 py_types_only = {
     'bool': "bool",
-    'const unsigned char *': "str",
+    'const unsigned char *': "bytes",
     'const char **': "List[str]",
     'unsigned int *': "List[int]",
     'virErrorPtr': "_RawError",
