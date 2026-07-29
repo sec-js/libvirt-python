@@ -3,6 +3,7 @@ stages:
   - containers
   - builds
   - sanity_checks
+  - pages
 
 .git_build_vars: &git_build_vars |
   export MAKEFLAGS="-j$(getconf _NPROCESSORS_ONLN)"
@@ -56,6 +57,49 @@ stages:
       fi
 
 include: '/ci/gitlab.yml'
+
+# Build Sphinx HTML API docs.
+py_api_docs:
+  extends:
+    - .gitlab_native_build_job
+  needs:
+    - job: x86_64-fedora-44-container
+      optional: true
+  script:
+    - export MAKEFLAGS="-j$(getconf _NPROCESSORS_ONLN)"
+    - export CFLAGS="-Werror"
+    - $PYTHON -m build -n -x
+    - $PYTHON -m venv docs-venv --system-site-packages --symlinks
+    - docs-venv/bin/python -m pip install dist/libvirt_python*.whl
+    - docs-venv/bin/python -m pip install -r requirements-docs.txt
+    - docs-venv/bin/sphinx-build -b html docs/ py_api_docs
+  artifacts:
+    expose_as: 'py_api_docs'
+    name: 'py_api_docs'
+    when: on_success
+    expire_in: 30 days
+    paths:
+      - py_api_docs
+  variables:
+    NAME: fedora-44
+    TARGET_BASE_IMAGE: registry.fedoraproject.org/fedora:44
+
+# Publish "py_api_docs" output via GitLab Pages
+pages:
+  stage: pages
+  script:
+    - mv py_api_docs public
+  dependencies:
+    - py_api_docs
+  rules:
+    - if: '$CI_PROJECT_NAMESPACE == $RUN_UPSTREAM_NAMESPACE && $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: on_success
+    - when: never
+  artifacts:
+    expose_as: 'pages'
+    name: 'pages'
+    paths:
+      - public
 
 api_coverage_job:
   extends:
