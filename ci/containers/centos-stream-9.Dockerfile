@@ -33,6 +33,7 @@ RUN dnf --quiet distro-sync -y && \
                 ninja-build \
                 perl-base \
                 pkgconfig \
+                pyproject-rpm-macros \
                 python3 \
                 python3-build \
                 python3-devel \

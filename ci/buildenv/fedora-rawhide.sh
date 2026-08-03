@@ -15,6 +15,7 @@ function install_buildenv() {
                 glibc-langpack-en \
                 libvirt-devel \
                 pkgconfig \
+                pyproject-rpm-macros \
                 python3 \
                 python3-build \
                 python3-devel \

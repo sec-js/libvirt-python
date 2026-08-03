@@ -3,6 +3,7 @@ packages:
   - ccache
   - gcc
   - pkg-config
+  - pyproject-rpm-macros
   - python3
   - python3-build
   - python3-devel
