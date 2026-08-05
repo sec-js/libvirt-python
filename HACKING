@@ -36,3 +36,23 @@ hand written source files
    the virStoragePool class
  - libvirt-override-virStream.py - high level overrides in
    the virStream class
+
+
+    Building API Documentation
+    ==========================
+
+The Python API reference is built with Sphinx using the autodoc
+extension. Since the Python modules are generated at build time
+from XML API descriptions, the package must be compiled before
+Sphinx can import anything.
+
+Prerequisites: setuptools, build, libvirt-devel, python3-devel
+
+  $ pip install setuptools build
+  $ python3 -m build -n -x
+  $ python3 -m venv docs-venv --system-site-packages --symlinks
+  $ docs-venv/bin/python -m pip install dist/libvirt_python*.whl
+  $ docs-venv/bin/python -m pip install -r requirements-docs.txt
+  $ docs-venv/bin/python -m sphinx -b html docs/ py_api_docs
+
+The rendered HTML will be in the py_api_docs/ directory.
